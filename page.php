@@ -1,7 +1,7 @@
 <?php
 
 	//loen sisse konfiguratsioonifaili
-	require_once "../config.php";
+	require_once "../../config.php";
 
 	$author_name = "Karl Otepalu";
 	//echo $author_name;
