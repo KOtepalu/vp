@@ -13,10 +13,12 @@
 		exit();
 	}
 	require_once "header.php";
+
+	echo "<p>Sisse loginud: " .$_SESSION["firstname"] ." " .$_SESSION["lastname"] .".</p> \n";
 ?>
 <ul>
-	<p> Sisse logitud: <?php echo $_SESSION["firstname"]." ".$_SESSION["lastname"]; ?>
-	<li>Logi <a href="?logout=1">välja</li>
+	<li>Logi <a href="?logout=1">välja</a></li>
+	<li>Fotode galeriise <a href="gallery_photo_upload.php">lisamine</a></li>
 	<br>
 	<li><a href="film.php">Siit saad lisada uusi filme</a></li>
 	<li><a href="read_film.php">Vaata lisatud filme</a></li>
