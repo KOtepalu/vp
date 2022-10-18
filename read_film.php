@@ -1,5 +1,23 @@
 <?php
 require_once "../../config.php";
+
+session_start();
+	//loen sisse konfiguratsioonifailid
+
+	require_once "fnc_user.php";
+	if(!isset($_SESSION["user_id"])){
+		//jõuga viiakse page.php
+		header("Location: page.php");
+		exit();
+	}
+	//logime välja
+	if(isset($_GET["logout"])){
+		session_destroy();
+		header("Location: page.php");
+		exit();
+	}
+	require_once "header.php";
+
 //loome andmebaasiühenduse
 $conn = new mysqli($server_host, $server_user_name, $server_password, $database);
 //määrame suhtlemisel kasutatava kooditabeli
@@ -31,19 +49,7 @@ $stmt->close();
 //sulgeme andmebaasiühenduse
 $conn->close();
 ?>
-<!DOCTYPE html>
-<html>
 
-<head>
-	<meta charset="utf-8">
-	<title>Karl Otepalu, veebiprogrammeerimine</title>
-</head>
-
-<body>
-	<img src="pics/vp_banner_gs.png" alt="Veebiprogrammeerimine">
-	<h1>Karl Otepalu, veebiprogrammeerimine</h1>
-	<p>See leht on loodud õppetöö raames ja ei sisalda tõsist infot!</p>
-	<p>Õppetöö toimus <a href="https://www.tlu.ee">Tallinna Ülikoolis<a />.</p>
     <?php echo $film_html; ?>
 </body>
 
