@@ -3,6 +3,7 @@
 	session_start();
 	//loen sisse konfiguratsioonifaili
 	require_once "fnc_user.php";
+	require_once "fnc_gallery.php";
 
 	$author_name = "Karl Otepalu";
 	//echo $author_name;
@@ -240,6 +241,8 @@
 			<input type="submit" name="login_submit" value="Logi sisse"><span><strong><?php echo $login_error; ?></strong></span>
 		</form>
 		<p><a href="add_user.php">Loo omale kasutaja</a></p>
+		<h2>Kasutajate üleslaetud foto</h2>
+		<?php echo show_latest_public_photo(); ?>
 		<hr>
 
 	<p>Õppetöö toimus <a href="https://www.tlu.ee">Tallinna Ülikoolis<a/>.</p>

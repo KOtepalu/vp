@@ -3,7 +3,16 @@
 
 <head>
 	<meta charset="utf-8">
-	<title><?php echo $author_name; ?>, veebiprogrammeerimine</title>
+	<title> Karli veebiprogrammeerimine</title>
+	<?php
+	$style_sheets = ["styles/gallery.css"];
+		if(isset($style_sheets) and !empty($style_sheets)){
+			for($i = 0;$i < count($style_sheets);$i++){
+			//<link rel="stylesheet" href="styles/gallery.css">
+				echo '<link rel="stylesheet" href="' .$style_sheets[$i] .'">' ."\n";
+			}
+		}
+	?>
 </head>
 
 <body>
