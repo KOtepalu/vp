@@ -1,9 +1,16 @@
+<?php require_once "fnc_user.php"; ?>
 <!DOCTYPE html>
 <html>
 
 <head>
 	<meta charset="utf-8">
 	<title> Karli veebiprogrammeerimine</title>
+	<style>
+		body{
+			background-color: <?php echo $_SESSION["user_bg_color"]; ?>;
+			color: <?php echo $_SESSION["user_txt_color"]; ?>;
+		}
+	</style>
 	<?php
 	$style_sheets = ["styles/gallery.css"];
 		if(isset($style_sheets) and !empty($style_sheets)){

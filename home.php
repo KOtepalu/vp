@@ -25,5 +25,6 @@
 	<li><a href="read_daycomments.php">Vaata lisatud päevakommentaare</a></li>
 	<li><a href="gallery_public.php">Avalike fotode galerii</a></li>
 	<li><a href="gallery_own.php">Minu fotode galerii</a></li>
+	<li><a href="user_profile.php">Minu profiil</a></li>
 </ul>
 <?php require_once "footer.php"; ?>

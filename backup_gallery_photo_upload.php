@@ -80,7 +80,9 @@
 				//move_uploaded_file($_FILES["photo_input"]["tmp_name"], "photo_upload_original/" .$_FILES["photo_input"]["name"]);
 				if(empty($upload->error)){
 					// ajutine fail: $_FILES["photo_input"]["tmp_name"]
-					$upload->move_original_photo($gallery_photo_original_folder .$file_name);
+					if(move_uploaded_file($_FILES["photo_input"]["tmp_name"], $gallery_photo_original_folder .$file_name) == false){
+						$upload->error = 1;
+					}
 				}
 				if(empty($upload->error)){
 					$photo_error = store_photo_data($file_name, $alt, $privacy);

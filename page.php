@@ -5,6 +5,17 @@
 	require_once "fnc_user.php";
 	require_once "fnc_gallery.php";
 
+	//klass
+	/* require_once "classes/Example.class.php";
+	$our_example = new Example(3);
+	$my_example = new Example(5);
+	echo $our_example->known_value ."<br>";
+	$my_example->add();
+	//unset kustutab muutuja ära (tühjendab mälu).
+	unset($our_example);
+	unset($my_example);
+	//echo $our_example->known_value ."<br>"; */
+
 	$author_name = "Karl Otepalu";
 	//echo $author_name;
 	$full_time_now = date("d.m.Y H:i:s");

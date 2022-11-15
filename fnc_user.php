@@ -25,7 +25,31 @@
 					$_SESSION["user_id"] = $id_from_db;
 					$_SESSION["firstname"] = $firstname_from_db;
 					$_SESSION["lastname"] = $lastname_from_db;
-					$stmt->close();
+
+          //määrame värvid
+          $_SESSION["user_bg_color"] = "#DDDDDD";
+          $_SESSION["user_txt_color"] = "#000099";
+          //värvide profiilist lugemine, kui on, tulevad uued väärtused. kui pole, jäävad need, mis otse kirjas.
+          $stmt->close();
+          $stmt = $conn->prepare("SELECT id FROM vp_userprofiles WHERE userid = ?");
+          echo $conn->error;
+          $stmt->bind_param("s", $_SESSION["user_id"]);
+          $stmt->execute();
+          if($stmt->fetch()){
+            $stmt->close();
+            $stmt = $conn->prepare("SELECT bgcolor, txtcolor FROM vp_userprofiles WHERE userid = ?");
+            echo $conn->error;
+            $stmt->bind_param("s", $_SESSION["user_id"]);
+            $stmt->bind_result($userbgc, $usertxtc);
+            $stmt->execute();
+            if($stmt->fetch()){
+              $_SESSION["user_bg_color"] = $userbgc;
+              $_SESSION["user_txt_color"] = $usertxtc;
+            }
+            echo $stmt->error;
+          }
+
+          $stmt->close();
 					$conn->close();
 					header("Location: home.php");
 					exit();
@@ -74,3 +98,52 @@
 		$conn->close();
 		return $notice;
 	}
+
+  function profile_colors($description, $bgcolor, $txtcolor){
+    $conn = new mysqli($GLOBALS["server_host"], $GLOBALS["server_user_name"], $GLOBALS["server_password"], $GLOBALS["database"]);
+    $conn->set_charset("utf8");
+    $stmt = $conn->prepare("SELECT id FROM vp_userprofiles WHERE userid = ?");
+    echo $conn->error;
+    $stmt->bind_param("s", $_SESSION["user_id"]);
+    $stmt->bind_result($id_from_db);
+    $stmt->execute();
+    if($stmt->fetch()){
+      $stmt->close();
+      $stmt = $conn->prepare("UPDATE vp_userprofiles SET description = ?, bgcolor = ?, txtcolor = ? WHERE userid = ?");
+      echo $conn->error;
+      $stmt->bind_param("sssi", $description, $bgcolor, $txtcolor, $_SESSION["user_id"]);
+      $stmt->execute();
+      echo $stmt->error;
+    } else {
+      $stmt->close();
+      $stmt = $conn->prepare("INSERT INTO vp_userprofiles (userid, description, bgcolor, txtcolor) VALUES(?,?,?,?)");
+      echo $conn->error;
+      $stmt->bind_param("isss", $_SESSION["user_id"], $description, $bgcolor, $txtcolor);
+      $stmt->execute();
+
+    echo $stmt->error;
+    $stmt->close();
+    $conn->close();
+    }
+  }
+
+ /*function read_colors($userid, $bgcolor, $txtcolor){
+    $conn = new mysqli($GLOBALS["server_host"], $GLOBALS["server_user_name"], $GLOBALS["server_password"], $GLOBALS["database"]);
+    $conn->set_charset("utf8");
+    $stmt = $conn->prepare("SELECT id FROM vp_userprofiles WHERE userid = ?");
+    echo $conn->error;
+    $stmt->bind_param("s", $_SESSION["user_id"]);
+    $stmt->execute();
+    if($stmt->fetch()){
+      $stmt->close();
+      $stmt = $conn->prepare("SELECT bgcolor, txtcolor FROM vp_userprofiles WHERE userid = ?");
+      echo $conn->error;
+      $stmt->bind_param("s", $_SESSION["user_id"]);
+      $stmt->bind_result($_SESSION["user_bg_color"], $_SESSION["user_txt_color"]);
+      $stmt->execute();
+      echo $stmt->error;
+      $stmt->close();
+      $conn->close();
+    }
+  }
+*/

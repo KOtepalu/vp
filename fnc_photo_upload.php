@@ -1,7 +1,8 @@
 <?php
 require_once "../../config.php";
 
-function check_file_type($file){
+//klassi
+/*function check_file_type($file){
   $file_type = 0;
   $image_check = getimagesize($file);
   if($image_check !== false){
@@ -16,14 +17,15 @@ function check_file_type($file){
     }
   }
   return $file_type;
-}
+}*/
 
 function create_filename($photo_name_prefix, $file_type){
   $timestamp = microtime(1) * 10000;
   return $photo_name_prefix .$timestamp ."." .$file_type;
 }
 
-function create_image($file, $file_type){
+//klassi
+/*function create_image($file, $file_type){
   $temp_image = null;
   if($file_type == "jpg"){
     $temp_image = imagecreatefromjpeg($file);
@@ -35,7 +37,7 @@ function create_image($file, $file_type){
     $temp_image = imagecreatefromgif($file);
   }
   return $temp_image;
-}
+}*/
 
 function resize_photo_thumbnail($temp_photo, $thumbnail_max_w, $thumbnail_max_h) {
 	$image_w = imagesx($temp_photo);
@@ -52,7 +54,8 @@ function resize_photo_thumbnail($temp_photo, $thumbnail_max_w, $thumbnail_max_h)
 	return $temp_image;
 }
 
-function save_photo($image, $target, $file_type){
+//klassi
+/*function save_photo($image, $target, $file_type){
 	$error = null;
 	if($file_type == "jpg"){
 		if(imagejpeg($image, $target, 95) == false){
@@ -70,9 +73,10 @@ function save_photo($image, $target, $file_type){
 		}
 	}
 	return $error;
-}
+}*/
 
-function resize_photo($temp_photo, $w, $h, $keep_orig_proportion = true){
+//klassi
+/*function resize_photo($temp_photo, $w, $h, $keep_orig_proportion = true){
 		$image_w = imagesx($temp_photo);
 		$image_h = imagesy($temp_photo);
 		$new_w = $w;
@@ -109,7 +113,7 @@ function resize_photo($temp_photo, $w, $h, $keep_orig_proportion = true){
 		//teeme originaalist väiksele koopia
 		imagecopyresampled($temp_image, $temp_photo, 0, 0, $cut_x, $cut_y, $new_w, $new_h, $cut_size_w, $cut_size_h);
 		return $temp_image;
-	}
+	}*/
 
   function store_photo_data($file_name, $alt, $privacy){
   	$notice = null;
