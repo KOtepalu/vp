@@ -1,8 +1,12 @@
 <?php
   require_once "../../config.php";
   require_once "fnc_user.php";
+  require_once "classes/Photoupload.class.php";
+  require_once "fnc_photo_upload.php";
 
-	session_start();
+	//session_start();
+	require_once "classes/SessionManager.class.php";
+	SessionManager::sessionStart("vp", 0, "~otepkarl/vp", "greeny.cs.tlu.ee");
 	if(!isset($_SESSION["user_id"])){
 		//jõuga viiakse page.php lehele
 		header("Location: page.php");
@@ -23,9 +27,49 @@
     echo profile_colors($description, $bgcolor, $txtcolor);
   }
 
+  $profile_photo_max_w = 300;
+  $profile_photo_max_h = 300;
+  $photo_error = null;
+
+  if($_SERVER["REQUEST_METHOD"] == "POST"){
+		if(isset($_POST["photo_submit"])){
+
+			if(isset($_FILES["photo_input"]["tmp_name"]) and !empty($_FILES["photo_input"]["tmp_name"])){
+				$upload = new Photoupload($_FILES["photo_input"]);
+				if(empty($upload->error)){
+					$upload->check_file_size($photo_file_size_limit);
+				}
+				if(empty($upload->error)){
+					$upload->create_filename($photo_name_prefix);
+				}
+				if(empty($upload->error)){
+					$upload->resize_photo($profile_photo_max_w, $profile_photo_max_h, false);
+          $upload->save_photo($gallery_photo_profile_folder .$upload->file_name);
+				}
+        if(empty($upload->error)){
+					$upload->move_original_photo($gallery_photo_profile_folder .$upload->file_name);
+				}
+        if(empty($upload->error)){
+					$photo_error = store_profile_photo($upload->file_name);
+				}
+				if(empty($photo_error) and empty($upload->error)){
+					$photo_error = "Pilt edukalt üles laetud!";
+				} else {
+					$photo_error .= $upload->error;
+				}
+				unset($upload);
+			} else {
+				$photo_error = "Pildifail on valimata!";
+			}
+
+		}//if photo_submit
+	}//if POST
+
   require_once "header.php";
 
 	echo "<p>Sisse loginud: " .$_SESSION["firstname"] ." " .$_SESSION["lastname"] .".</p> \n";
+  #echo save_profile_photo();
+
   ?>
   <ul>
   	<li><a href="?logout=1">Logi välja</a></li>
@@ -46,5 +90,15 @@
     <br>
     <input type="submit" id="color_submit" name="color_submit" value="Salvesta">
   </form>
+
+  <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">
+    <h2>Profiili pildi muutmine</h2>
+    <label for="photo_input">Vali pildifail: </label>
+    <input type="file" name="photo_input" id="photo_input">
+    <br>
+    <input type="submit" name="photo_submit" id="photo_submit" value="Lae üles">
+    <span><?php echo $photo_error; ?></span>
+  </form>
   <br>
+  <?php echo read_pfp(); ?>
   <?php require_once "footer.php"; ?>

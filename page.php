@@ -1,6 +1,8 @@
 <?php
   //algatan sessiooni
-	session_start();
+	//session_start();
+	require_once "classes/SessionManager.class.php";
+	SessionManager::sessionStart("vp", 0, "~otepkarl/vp", "greeny.cs.tlu.ee");
 	//loen sisse konfiguratsioonifaili
 	require_once "fnc_user.php";
 	require_once "fnc_gallery.php";
