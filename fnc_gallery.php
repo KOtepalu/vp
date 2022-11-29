@@ -5,14 +5,14 @@
         $skip = ($page - 1) * $limit;
         $photo_html = null;
         $conn = new mysqli($GLOBALS["server_host"], $GLOBALS["server_user_name"], $GLOBALS["server_password"], $GLOBALS["database"]);
-		$conn->set_charset("utf8");
+				$conn->set_charset("utf8");
         //$stmt = $conn->prepare("SELECT filename, alttext FROM vp_photos_1 WHERE privacy >= ? AND deleted IS NULL");
         //LIMIT x - mitu näidata
         //LIMIT x,y - mitu vahele jätta, mitu näidata,
-		$stmt = $conn->prepare("SELECT vp_photos.filename, vp_photos.alttext, vp_users.firstname, vp_users.lastname FROM vp_photos JOIN vp_users ON vp_photos.userid = vp_users.id WHERE vp_photos.privacy >= ? AND vp_photos.deleted IS NULL GROUP BY vp_photos.id ORDER BY vp_photos.id DESC LIMIT ?,?");
+				$stmt = $conn->prepare("SELECT vp_photos.id, vp_photos.filename, vp_photos.alttext, vp_users.firstname, vp_users.lastname FROM vp_photos JOIN vp_users ON vp_photos.userid = vp_users.id WHERE vp_photos.privacy >= ? AND vp_photos.deleted IS NULL GROUP BY vp_photos.id ORDER BY vp_photos.id DESC LIMIT ?,?");
         echo $conn->error;
         $stmt->bind_param("iii", $privacy, $skip, $limit);
-        $stmt->bind_result($filename_from_db, $alttext_from_db, $firstname_from_db, $lastname_from_db);
+        $stmt->bind_result($id_from_db, $filename_from_db, $alttext_from_db, $firstname_from_db, $lastname_from_db);
         $stmt->execute();
         while($stmt->fetch()){
             $photo_html .= '<div class="thumbgallery">' ."\n";
@@ -22,7 +22,7 @@
             } else {
                 $photo_html .= $alttext_from_db;
             }
-            $photo_html .= '" class="thumbs">' ."\n";
+            $photo_html .= '" class="thumbs" data-filename="' .$filename_from_db .'" data-id="' .$id_from_db .'">' ."\n";
             $photo_html .= "<p>" .$firstname_from_db ." " .$lastname_from_db ."</p> \n";
             $photo_html .= "</div> \n";
         }

@@ -43,7 +43,7 @@
 					$upload->create_filename($photo_name_prefix);
 				}
 				if(empty($upload->error)){
-					$upload->resize_photo($profile_photo_max_w, $profile_photo_max_h, false);
+					$upload->resize_photo($profile_photo_max_w, $profile_photo_max_h);
           $upload->save_photo($gallery_photo_profile_folder .$upload->file_name);
 				}
         if(empty($upload->error)){
